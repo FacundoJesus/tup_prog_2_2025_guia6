@@ -13,18 +13,28 @@ namespace Ejercicio1.Models
 
         public PersonaJuridica(string nombre, string cuit):base(nombre)
         {
-            this.cuit = Convert.ToString(cuit);
+            this.cuit = cuit;
 
-            Regex regex = new Regex(@"^\d{11}$");
-            Match match = regex.Match(cuit);
-            if (match.Success == false) {
+            if (VerificarCUIT(cuit) == false)
+            {
                 throw new FormatoCUITNoValidoException();
             }
         }
 
+        private bool VerificarCUIT(string cuit)
+        {
+            Regex regex = new Regex(@"^\d{11}$");
+            Match match = regex.Match(cuit);
+            if (match.Success == false)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public override string Describir()
         {
-            return $"Persona Jurídica - Nombre: {this.Nombre} Apellido: {this.cuit} ";
+            return $"{this.Nombre} ({this.cuit}) ";
         }
     }
 }

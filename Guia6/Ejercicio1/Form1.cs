@@ -10,19 +10,19 @@ namespace Ejercicio1
         }
 
         List<Persona> listaPersonas = new List<Persona>();
+
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             FDatos fDatos = new FDatos();
-            
+
 
             bool volverAMostrar = true;
-
-            while (volverAMostrar && fDatos.ShowDialog() == DialogResult.OK)
+            fDatos.ShowDialog();
+            while (fDatos.DialogResult == DialogResult.OK && volverAMostrar)
             {
                 try { 
 
                     string nombre = fDatos.tbNombre.Text;
-                    string cuit = fDatos.tbCUIT.Text;
 
                     Persona persona = null;
                     if (fDatos.rbFisica.Checked)
@@ -33,6 +33,7 @@ namespace Ejercicio1
                     else
                     if (fDatos.rbJuridica.Checked)
                     {
+                        string cuit = fDatos.tbCUIT.Text;
                         persona = new PersonaJuridica(nombre, cuit);
                     }
 
@@ -41,37 +42,35 @@ namespace Ejercicio1
                         listaPersonas.Add(persona);
                         ActualizarListado();
 
-                        /*#region Limpio Campos
-                        fDatos.tbNombre.Clear();
-                        fDatos.tbCUIT.Clear();
-                        fDatos.lbCuitExcept.Text = "";
-                        fDatos.lbNombreExcept.Text = "";
-                        #endregion*/
-
                         volverAMostrar = false;
                     }
-                    else
+                    else 
                     {
                         MessageBox.Show("Debes seleccionar un Tipo de Persona");
+                        
                     }
-
-
 
                 }catch (FormatoNombreNoValidoException ex){
                     fDatos.lbNombreExcept.Text = ex.Message;
+
                 }catch (FormatoCUITNoValidoException ex){
                     fDatos.lbCuitExcept.Text = ex.Message;
+
                 }
                 catch (Exception ex){
                     MessageBox.Show("Otro tipo de excepción capturada");
                 }
 
-                
+                if(volverAMostrar)
+                {
+                    fDatos.ShowDialog();
+                }
                     
             }
 
             fDatos.Dispose();
         }
+
 
 
         private void btnQuitar_Click(object sender, EventArgs e){

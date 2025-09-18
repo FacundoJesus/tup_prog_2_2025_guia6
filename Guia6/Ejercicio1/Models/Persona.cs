@@ -17,7 +17,7 @@ namespace Ejercicio1.Models
             }
             set
             {
-                Regex regex = new Regex(@"s*(?<apellido>[\p{L}\s]{2,}?),\s*(?<nombres>[\p{L}\s]{2,})\s*$");
+                Regex regex = new Regex(@"^s*(?<apellido>[\p{L}\s]{2,}?),\s*(?<nombres>[\p{L}\s]{2,})\s*$");
                 Match match = regex.Match(value);
                 if (match.Success == false) {
                     throw new FormatoNombreNoValidoException();
@@ -43,7 +43,7 @@ namespace Ejercicio1.Models
 
         public virtual string Describir()
         {
-            return $"Persona Física - Nombre: {this.Nombre}";
+            return $"{this.Nombre}";
         }
     }
 }
